@@ -1,0 +1,46 @@
+<h1 class="heading">Country and Weather Information</h1>
+<p class="description">Search and explore countries</p>
+
+<!-- INPUT -->
+<input 
+  [(ngModel)]="countryName"
+  (input)="onSearch()"
+  placeholder="Search country..."
+  class="country-input"
+/>
+
+<!-- GRID VIEW -->
+<div *ngIf="!showDetails">
+  <div class="grid-container">
+    <div 
+      class="card" 
+      *ngFor="let country of filteredCountries; trackBy: trackByName"
+    >
+      <img [src]="country.flags.png" class="flag"/>
+      <h3>{{ country.name.common }}</h3>
+
+      <button (click)="viewMore(country)">
+        View More
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- DETAILS VIEW -->
+<div *ngIf="showDetails && result" class="details-card">
+
+  <button (click)="goBack()">⬅ Back</button>
+
+  <h2>{{ result.name }}</h2>
+
+  <img [src]="result.flag" width="150"/>
+
+  <p><b>Capital:</b> {{ result.capital }}</p>
+  <p><b>Population:</b> {{ result.population }}</p>
+  <p><b>Region:</b> {{ result.region }}</p>
+
+  <h3>Weather in {{ result.capital }}</h3>
+  <p><b>Temperature:</b> {{ result.temperature }} °C</p>
+  <p><b>Condition:</b> {{ result.description }}</p>
+
+</div>
