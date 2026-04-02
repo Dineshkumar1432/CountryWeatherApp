@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ApiService } from '../api';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -18,7 +18,7 @@ export class Country implements OnInit {
   result: any = null;
   showDetails = false;
 
-  constructor(private api: ApiService) {}
+  constructor(private api: ApiService,private cd: ChangeDetectorRef) {}
 
   ngOnInit() {
     this.api.getAllCountries().subscribe(data => {
@@ -39,10 +39,15 @@ export class Country implements OnInit {
    this.countryName = ''; 
   //  this.showDetails = true;
   //  this.result = null;
-  this.api.getCountryAndWeather(country.cca3)   // ✅ use code
+  this.cd.detectChanges(); // ✅ trigger change detection before API call
+  this.api.getCountryAndWeather(country.cca3)   
+  // ✅ use code
     .subscribe(data => {
+      this.cd.detectChanges(); // ✅ trigger change detection before updating result
       this.result = data;
+      this.cd.detectChanges(); // ✅ trigger change detection
       this.showDetails = true;
+      this.cd.detectChanges(); // ✅ trigger change detection after showing details
     });
 }
 
